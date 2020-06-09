@@ -22,8 +22,8 @@ export default function Home() {
     useEffect(() => {
         // creating another function to be able to use async directive
         async function loadProducts() {
-            const response = await api.get('products');
-            const data = response.data.map(product => ({
+            const response = await api.get('product');
+            const data = response.data.rows.map(product => ({
                 ...product,
                 priceFormatted: formatPrice(product.price),
             }));
