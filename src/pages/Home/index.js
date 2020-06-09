@@ -1,71 +1,124 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { MdAddShoppingCart } from 'react-icons/md';
-import api from '../../services/api';
-import { formatPrice } from '../../util/format';
+import React, { Component } from "react";
+import {
+    MDBCol,
+    MDBCard,
+    MDBCardBody,
+    MDBCardTitle,
+    MDBCardImage,
+} from 'mdbreact';
+import Layout from "./Layout";
+import { getPlaces } from "./apiCore";
 
-import * as CartActions from '../../store/modules/cart/actions';
+import BannerTop from "./BannerTop";
+import Background1 from "./resources/FondoNaranja.png";
+import Background2 from "./resources/FondoNegro.png";
+import Background3 from "./resources/FondoAzul.png";
+import Icon1 from "./resources/Servicios/hogar.svg";
+import Icon2 from "./resources/Servicios/auto.svg";
+import Icon3 from "./resources/Servicios/oficina.svg";
+import Icon4 from "./resources/Servicios/mas.svg";
+const arrayImage = [Background1, Background2, Background3];
+const arrayIcon = [Icon1, Icon2, Icon3, Icon4];
 
-import { ProductList } from './styles';
-
-export default function Home() {
-    const [products, setProducts] = useState([]);
-    const dispatch = useDispatch();
-    const amount = useSelector(state =>
-        state.cart.reduce((sumAmount, product) => {
-            sumAmount[product.id] = product.amount;
-            return sumAmount;
-        }, {})
-    );
-
-    // replacing componentDidMount
-    useEffect(() => {
-        // creating another function to be able to use async directive
-        async function loadProducts() {
-            const response = await api.get('products');
-            const data = response.data.map(product => ({
-                ...product,
-                priceFormatted: formatPrice(product.price),
-            }));
-            // and instead of setState, we use setProducts now
-            setProducts(data);
-        }
-
-        loadProducts();
-    }, []);
-
-    function handleAddProduct(id) {
-        console.tron.log(id);
-        // here using the bindActionCreators we can use the action directly from the props
-        dispatch(CartActions.addToCartRequest(id));
-
-        // after adding a product to cart, redux saga navigates to the /cart page. This happens
-        // at the generator addToCart
-
-        // const { dispatch } = this.props;
-        // dispatch(CartActions.addToCart(product));
+export default class Home extends Component {
+    state = {
+        placesToClean: [],
+        arrayImage: arrayImage,
+        arrayIcon: arrayIcon,
     }
+    componentDidMount() {
+        getPlaces().then(data => {
+            if (!data || data.error) {
+                if (!data) {
+                    console.log("data is empty");
+                } else {
+                    console.log(data.error);
+                }
+            } else {
+                this.setState({ placesToClean: data })
+            }
+        });
+    }
+    render() {
+        const { placesToClean, arrayImage, arrayIcon } = this.state;
+        console.log(placesToClean)
+        const { history } = this.props;
+        return <Layout className="center backColorLigthGray">
+            <BannerTop title="Clean Easy" description="Sabemos de limpieza" />
+            {/*<h2 className="mb-4">New Arrivals</h2>
+    <div className="row">
+      {productsByArrival.map((product, i) => (
+        <div key={i} className="col-3 mb-3">
+          <Card product={product} />
+        </div>
+      ))}
+    </div>
+    <h2 className="mb-4">Best Sellers</h2>
+    <div className="row">
+      {productsBySell.map((product, i) => (
+        <div key={i} className="col-3 mb-3">
+          <Card product={product} />
+        </div>
+      ))}
+      </div>*/}
+            <div className="row">
+                <div className="container mb-3 mt-3 text-center">
+                    <h1 className="mb-2 caps">¿Que necesitas limpiar?</h1>
+                    <h4 className="mb-3">
+                        Seleccione el tipo de zona que desea limpiar{" "}
+                    </h4>
+                    <div className="row">
+                        {placesToClean && placesToClean.rows && placesToClean.rows.map((product, index) => {
+                            return (
+                                <>
+                                    <MDBCol lg="3" md="12" className="mb-lg-0 mb-4">
+                                        <MDBCard
+                                            className=" mdb-color lighten-4"
+                                            style={{
+                                                backgroundImage: `url(${arrayImage[index]})`,
+                                                backgroundRepeat: "round",
+                                                minHeight: "260px"
+                                            }}
+                                            onClick={() => {
+                                                history.push("/step2");
+                                            }}
+                                        >
+                                            <MDBCardBody className="white-text">
+                                                <MDBCardTitle tag="h3">{product.name}</MDBCardTitle>
 
-    return (
-        <ProductList>
-            {products.map(product => (
-                <li key={product.id}>
-                    <img src={product.image} alt={product.title} />
-                    <strong>{product.title}</strong>
-                    <span>{product.priceFormatted}</span>
+                                                <div className="d-flex mt-5">
+                                                    <MDBCardImage
+                                                        src={arrayIcon[index]}
+                                                        overlay=""
+                                                        className=" mitadwidth mt-5"
+                                                    />
+                                                </div>
+                                            </MDBCardBody>
+                                        </MDBCard>
+                                    </MDBCol>
 
-                    <button
-                        type="button"
-                        onClick={() => handleAddProduct(product.id)}
-                    >
-                        <div>
-                            <MdAddShoppingCart size={16} color="#FFF" />{' '}
-                            {amount[product.id] || 0}
-                            <span>Agregar al carrito</span>
-                        </div>
-                    </button>
-                </li>
-            ))}
-        </ProductList>
-    );
+                                    {/* <div key={product._id} className="col-3 mb-3">
+                  <PlaceCard product={product} onClick={() => { toggleInMap(product._id) }} isSelected={map[product._id]} />
+                </div> */}
+                                </>
+                            );
+                        })}
+                    </div>
+                    {/* <div className="row reverse">
+          <MDBBtn
+            right
+            color="blue"
+            onClick={() => {
+              history.push("/step2");
+            }}
+          >
+            Siguiente
+          </MDBBtn>
+        </div> */}
+                </div>
+            </div>
+        </Layout>
+    }
 }
+
+//export default Home;
