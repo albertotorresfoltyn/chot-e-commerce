@@ -25,7 +25,7 @@ export default function Home() {
             const response = await api.get('product');
             const data = response.data.rows.map(product => ({
                 ...product,
-                priceFormatted: formatPrice(product.price),
+                priceFormatted: formatPrice(product.unitPrice),
             }));
             // and instead of setState, we use setProducts now
             setProducts(data);
@@ -38,25 +38,25 @@ export default function Home() {
         console.tron.log(id);
         // here using the bindActionCreators we can use the action directly from the props
         dispatch(CartActions.addToCartRequest(id));
-
         // after adding a product to cart, redux saga navigates to the /cart page. This happens
         // at the generator addToCart
-
         // const { dispatch } = this.props;
         // dispatch(CartActions.addToCart(product));
     }
-
+debugger;
     return (
         <ProductList>
             {products.map(product => (
                 <li key={product.id}>
                     <img src={product.image} alt={product.title} />
-                    <strong>{product.title}</strong>
+                    <strong>{product.desription}</strong>
+                    <strong>{product.name}</strong>
                     <span>{product.priceFormatted}</span>
-
                     <button
                         type="button"
-                        onClick={() => handleAddProduct(product.id)}
+                        onClick={() => {debugger;
+                            handleAddProduct(product.id);
+                        }}
                     >
                         <div>
                             <MdAddShoppingCart size={16} color="#FFF" />{' '}
