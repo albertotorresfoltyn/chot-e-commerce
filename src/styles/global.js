@@ -6,29 +6,81 @@ import background from '../assets/images/background.svg';
 export default createGlobalStyle`
     @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
 
-    * {
-        margin: 0;
-        padding: 0;
-        outline: 0;
-        box-sizing: border-box;
-    }
+  
 
-    body {
-        background: #191920 url(${background}) no-repeat center top;
-        -webkit-font-smoothing: antialiased;
-    }
+    .maxWidth150{
+        max-width: 150px;
+        
+        }
+        
+        .center {
+          align-content: center;
+          align-items: center;
+          align-self: center;
+        }
+        
+        .reverse {
+          flex-direction: row-reverse;
+        }
+        
+        .titleClass{
+        
+          font-family: "Arial", Gadget, sans-serif;
+            font-size: 5rem;
+            letter-spacing: 10px;
+            font-weight: 700;
+            text-decoration: none;
+            font-style: normal;
+            font-variant: small-caps;
+            font-feature-settings: normal;
+        
+        }
+        
+        .backColorLigthGray {
+          background-color: #ededed;
+        
+        
+        }
+        
+        .caps {
+          font-variant: small-caps;
+        }
+        
+        .deep-celeste{
+          background-color: lightseagreen
+        }
+        
+        .hrWhite {
+          border-top: 5px solid rgba(255, 255, 255, 0);
+          background-color: white;
+        }
+        
+        .jumboHead {
+         padding: 15px !important;
+         background-color: #3e4551 !important;
+        }
+        #ShopContainer .card {
+          min-height: 350px;
+            max-height: 350px;
+        }
+        .card > .view{
+         height: 150px;
+        }
+        
+        .priceStyle{
+          color: gray;
+          font-size: 2.6rem;
+        }
+        
+        .mitadwidth{
+          width: 50%;
+        }
+        
+        .maxWidth300{
+          max-width: 300px;
+        
+        
+        }
+        
 
-    body, input, button {
-        font: 14px 'Roboto', sans-serif;
-    }
-
-    #root {
-        /* max-width: 1020px;*/
-        margin: 0 auto;
-        padding: 0 20px 50px;
-    }
-
-    button {
-        cursor: pointer;
-    }
 `;
