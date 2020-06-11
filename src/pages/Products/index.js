@@ -49,11 +49,14 @@ debugger;
             {products.map(product => (
                 <li key={product.id}>
                     <img src={product.image} alt={product.title} />
-                    <strong>{product.title}</strong>
+                    <strong>{product.desription}</strong>
+                    <strong>{product.name}</strong>
                     <span>{product.priceFormatted}</span>
                     <button
                         type="button"
-                        onClick={() => handleAddProduct(product.id)}
+                        onClick={() => {debugger;
+                            handleAddProduct(product.id);
+                        }}
                     >
                         <div>
                             <MdAddShoppingCart size={16} color="#FFF" />{' '}
