@@ -32,7 +32,7 @@ function* addToCart({ id }) {
         yield put(updateAmountSuccess(id, amount));
     } else {
         const response = yield call(api.get, `/product/${id}`);
-
+        debugger;
         const data = {
             ...response.data,
             amount: 1,
