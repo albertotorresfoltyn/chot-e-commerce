@@ -36,7 +36,7 @@ function* addToCart({ id }) {
         const data = {
             ...response.data,
             amount: 1,
-            priceFormatted: formatPrice(response.data.price),
+            priceFormatted: formatPrice(response.data.unitPrice),
         };
         yield put(addToCartSuccess(data));
 

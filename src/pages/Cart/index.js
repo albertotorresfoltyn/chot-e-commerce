@@ -17,13 +17,13 @@ export default function Cart() {
     const cart = useSelector(state =>
         state.cart.map(product => ({
             ...product,
-            subTotal: formatPrice(product.price * product.amount),
+            subTotal: formatPrice(product.unitPrice * product.amount),
         }))
     );
     const total = useSelector(state =>
         formatPrice(
             state.cart.reduce((sumTotal, product) => {
-                return sumTotal + product.price * product.amount;
+                return sumTotal + product.unitPrice * product.amount;
             }, 0)
         )
     );
